@@ -30,12 +30,16 @@ public class ProductService {
     }
 
     public Product updateProduct(Product product, MultipartFile imageFile) throws IOException {
-        product.setImageName(imageFile.getOriginalFilename());
-        product.setImageType(imageFile.getContentType());
-        product.setImageData(imageFile.getBytes());
-        return  productRepo.save(product);
+        // Your existing logic, but handle case when imageFile is null
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // Update image logic
+            product.setImageData(imageFile.getBytes());
+            product.setImageName(imageFile.getOriginalFilename());
+            product.setImageType(imageFile.getContentType());
+        }
+        // If imageFile is null, keep the existing image data
+        return productRepo.save(product);
     }
-
     public void deleteProduct(int id) {
         productRepo.deleteById(id);
     }
